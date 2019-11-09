@@ -1,2 +1,11 @@
 # scala-getting-started
-Learning scala
+
+> Record the process of learning scala.
+
+```java
+Scala Version: 2.13.1
+```
+
+## scala-basic-type
+
+- Basic types and basic operations of scala.
