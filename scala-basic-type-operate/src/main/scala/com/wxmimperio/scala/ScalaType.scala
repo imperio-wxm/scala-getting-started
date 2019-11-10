@@ -1,3 +1,5 @@
+package main.scala
+
 object ScalaType {
 
     def main(args: Array[String]): Unit = {
