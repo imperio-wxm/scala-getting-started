@@ -6,6 +6,6 @@
 Scala Version: 2.13.1
 ```
 
-## scala-basic-type
+## scala-basic-type-operate
 
 - Basic types and basic operations of scala.
