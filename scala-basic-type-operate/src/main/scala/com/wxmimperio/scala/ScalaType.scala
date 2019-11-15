@@ -44,5 +44,37 @@ object ScalaType {
         println(str1)
         val str2 = """test1"""
         println(str2)
+
+        // Unit
+        val unit1 = ()
+        println(unit1)
+        val unit2: Unit = ()
+        println(unit2)
+
+        // Boolean
+        val b1 = true
+        println(b1)
+        val b2: Boolean = false
+        println(b2)
+
+        // Any
+        val any: Any = "sdfa"
+        println(any)
+        // 引用类型
+        val any1: AnyRef = null
+        println(any1)
+        // 数值类型超类，可接受任意数值类型
+        val numAny: AnyVal = 10.23
+        println(numAny)
+
+        // null
+        val null1: Null = null
+        println(null1)
+
+        // map
+        val map1 = Map("key" -> "value")
+        println(map1)
+        println(map1.get("key"))
+        println(map1.get("key1"))
     }
 }
