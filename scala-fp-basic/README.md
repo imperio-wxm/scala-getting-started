@@ -10,6 +10,8 @@
 
 > scala 中形参默认是val类型，不能在函数中进行修改
 
+> 返回值为Unit的函数，也叫做`过程`
+
 ```scala
 // 形式一，返回值为指定类型：
 // :返回值 = {} 
@@ -41,6 +43,22 @@ def fun4(a: Int*) = {
 // 从1开始n个参数
 def fun5(a:String,b:Int*): String = {
 
+}
+```
+
+- Lazy Function
+
+> 将函数的求值尽可能的推迟，直到调用时才真正执行
+
+> 将函数的返回值声明为`lazy`，直到首次使用时才进行执行
+
+> lazy 不能修饰var变量，lazy是线程安全的
+
+> lazy 不仅可以修饰函数，也可以修饰变量`lazy val a = 1`
+
+```scala
+lazy val str3 = (a: Int, b: Int) => {
+    a + b
 }
 ```
 
