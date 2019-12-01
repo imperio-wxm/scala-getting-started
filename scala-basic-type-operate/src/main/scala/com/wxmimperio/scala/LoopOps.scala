@@ -1,5 +1,7 @@
 package com.wxmimperio.scala
 
+import util.control.Breaks._
+
 object LoopOps {
     def main(args: Array[String]): Unit = {
         // 1 到 10，前后都是闭区间
@@ -54,5 +56,56 @@ object LoopOps {
             sum
         }
         println(result1)
+
+        // for小括号换成大括号
+        for {
+            i <- 1 to 3
+        } {
+            println(s"$i" + "_wxm")
+        }
+
+        println("======")
+
+        // 步长for循环
+        for (i <- Range(1, 10, 2)) {
+            println(s"$i" + "_wxm")
+        }
+
+        println("======")
+
+        // while
+        // while整个结束没有返回值，是Unit类型
+        var a = 1
+        while (a < 5) {
+            println(a)
+            a += 1
+        }
+
+        println("======")
+
+        // do while
+        var b = 1
+        do {
+            println(b)
+            b += 1
+        } while (b < 3)
+
+        println("======")
+
+        // 循环终止
+        // breakable:
+        // 1. 是一个高阶函数
+        // 2. 对break()抛出的异常进行处理，代码可以继续执行
+        // 3. 当我们传入的是代码块时，用大括号替换小括号
+        breakable {
+            // 会抛出一个scala.util.control.BreakControl异常
+            // def break(): Nothing = { throw breakException }
+            for (i <- 1 to 10) {
+                println(i)
+                if (i == 5) {
+                    break()
+                }
+            }
+        }
     }
 }
