@@ -22,6 +22,34 @@ object MethodAndFunction {
             a * b
         }
         println(fun1(5, 6))
+
+        // 函数默认值
+        def fun2(str: String = "wxm"): String = {
+            str
+        }
+
+        println(fun2())
+        println(fun2("wxm_01"))
+
+        // 带名参数
+        def fun3(a: String = "wxm_", b: Int = 1): String = {
+            a + b
+        }
+        // 直接用形参名称指定为哪个参数赋值
+        println(fun3(b = 2))
+
+        // 可变参数
+        // 可变形参是个集合：ArraySeq
+        def fun4(a: Int*) = {
+            println(a)
+            for (i <- a) {
+                println("wxm_" + i)
+            }
+        }
+
+        fun4()
+        fun4(1)
+        fun4(2, 3)
     }
 }
 
