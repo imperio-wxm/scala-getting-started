@@ -94,3 +94,12 @@ def myException(): Nothing = {
     throw new Exception("my exception")
 }
 ```
+
+- 可以用`throws`注解来声明异常，表示此处可能抛出此类型异常
+
+```scala
+@throws(classOf[NumberFormatException])
+def throwsMyException() = {
+    "abc".toInt
+}
+```
