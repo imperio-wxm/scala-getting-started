@@ -67,3 +67,30 @@ breakable {
     }
 }
 ```
+
+### Scala Exception
+
+> try {} cache {} finally {} 形式
+
+> 只有一个cache语句，其中用`case`模式匹配处理不同的异常类型
+
+> `=>`后可以是一个代码块，用于处理异常
+
+```scala
+try {
+    var a = 1 / 0
+} catch {
+    case ex: ArithmeticException => println(s"捕获了异常: $ex")
+    case ex: Exception => println(s"捕获了异常： $ex")
+} finally {
+    println("finally！")
+}
+```
+
+- throw 表达式是有类型的，类型为Nothing，因为Nothing是所有类型的子类型
+
+```scala
+def myException(): Nothing = {
+    throw new Exception("my exception")
+}
+```
