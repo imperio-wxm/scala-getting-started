@@ -25,6 +25,12 @@ class Person {
 
 > 辅助构造函数的第一句，一定要显式调用主构造函数
 
+> 用`private`关键字表示私有主、辅助构造函数
+
+> 主构造函数的形参没有被修饰符修饰，则此形参为`私有变量`，有效范围就在构造函数内；如果参数使用val，则此形参为类的私有`只读`属性；如果参数使用var，则此形参为类私有的`读写`属性
+
+> @BeanProperty注解，会自动添加java 中getter、setter方法
+
 ```scala
 // 主构造函数
 class PersonTest01(nameArg: String, ageArg: Int) {
@@ -46,5 +52,26 @@ class PersonTest01(nameArg: String, ageArg: Int) {
     override def toString: String = {
         s"name = $name, age = $age"
     }
+}
+
+// 将构造函数私有化
+class PersonTest02 private(name: String) {
+    var n: String = _
+
+    private def this() {
+        this("wxm")
+    }
+}
+
+// name 为私有变量，有效范围就在主构造函数内
+// age 为PersonTest03类的只读私有属性
+// gender 为为PersonTest03类的读写私有属性
+class PersonTest03(name: String, val age: Int, var gender: String) {
+    var n: String = _
+}
+
+//  @BeanProperty注解，会自动添加java 中getter、setter方法
+class PersonTest04 {
+    @BeanProperty var name: String = _
 }
 ```
