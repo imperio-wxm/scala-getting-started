@@ -75,3 +75,48 @@ class PersonTest04 {
     @BeanProperty var name: String = _
 }
 ```
+
+- scala中的package
+
+> 子包可以直接访问父包内容，用package的{}提现作用域；而java要引用父包的内容必须import
+
+> scala中的包可以互相嵌套
+
+> 若本包与父包中的内容重名，则用就近原则引用；此时若要引用父包的内容，则需要指定路径
+
+> 父类要引用子包的内容时必须`import`
+
+> `@_root_.xxx`表示绝对路径引入
+
+> package obj 是为了解决直接在包中定义方法、变量
+
+```scala
+// 1. 声明一个包对象
+// 2. 它是com.wximperio.scala的包对象
+// 3. 每一个包只能有一个包对象，且只能在父包中定义，包对象和包是平级关系
+// 4. 包对象的名称必须与对应的包一直
+// 5. 在包对象中可以定义变量和方法
+// 6. 在此包中可以直接使用包对象中的变量和方法
+// 7. 包对象会生成两个class，package.class 和 package$.class
+// 8. 包对象的变量、函数都会生成在package.class 和 package$.class文件中，调用时是去找这两个class
+
+package object scala {
+    var a: String = _
+
+    def test(): Unit = {
+        a = "wxm"
+        println(a)
+    }
+}
+
+package scala {
+
+    object ScalaPackageObj {
+        def main(args: Array[String]): Unit = {
+            // 使用包对象的方法，变量
+            scala.a
+            test()
+        }
+    }
+}
+```
