@@ -1,6 +1,6 @@
 ## Object oriented programming basics
 
-- scala中的成员变量
+### scala中的成员变量
 
 > 成员变量默认都为`private`类型
 
@@ -17,7 +17,7 @@ class Person {
 }
 ```
 
-- scala中的构造函数
+### scala中的构造函数
 
 > scala中有两种构造函数，主构造函数、辅助构造函数
 
@@ -76,7 +76,7 @@ class PersonTest04 {
 }
 ```
 
-- scala中的package
+### scala中的package
 
 > 子包可以直接访问父包内容，用package的{}提现作用域；而java要引用父包的内容必须import
 
@@ -117,6 +117,41 @@ package scala {
             scala.a
             test()
         }
+    }
+}
+```
+
+### 伴生类和伴生对象
+
+> 在scala中，没有静态的概念，创建一个单例对象来为程序的执行提供入口点
+
+> 当有一个与单例(singleton)对象同名的类时，它被称为伴生(companion)类，单例(singleton)对象调用伴生对象
+
+> 伴生对象用于提供`静态`的支持，其中的属性和方法可以当做static看待；伴生类用于提供`非静态`的支持
+
+> 伴生对象通常会使用`apply`数定义伴生类的构造方法，所以伴生对象无法用`new`关键字，而伴生类可以new
+
+> 伴生类及其伴随对象必须在同一个源文件中定义
+
+> 伴生对象和伴生类可以互相访问其私有成员，不与伴生类同名的单例对象称为孤立对象
+
+```scala
+class MyTest {
+    def sayHello(): Unit = {
+        println("hello")
+        // 在伴生类中调用伴生对象的方法，类似于调用静态方法
+        MyTest.sayHi()
+        // 伴生类也可以访问伴生对象的私有变量
+        MyTest.a = "rename"
+        println(MyTest.a)
+    }
+}
+
+object MyTest {
+    var a: String = "companion object"
+
+    def sayHi(): Unit = {
+        println(a)
     }
 }
 ```
