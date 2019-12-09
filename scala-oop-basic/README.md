@@ -121,6 +121,30 @@ package scala {
 }
 ```
 
+### scala extends
+
+> 重写非抽象方法必须用`override`关键字
+
+> 调用父类方法用`super`关键字
+
+```scala
+class Person {
+    val name: String = "wxm"
+
+    def sayHi(): Unit = {
+        println(s"$name")
+    }
+}
+
+class Student extends Person {
+    override def sayHi(): Unit = {
+        println("重写父类方法")
+        // 调用父类方法用super
+        super.sayHi()
+    }
+}
+```
+
 ### 伴生类和伴生对象
 
 > 在scala中，没有静态的概念，创建一个单例对象来为程序的执行提供入口点
