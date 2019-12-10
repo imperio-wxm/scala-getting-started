@@ -103,3 +103,32 @@ def throwsMyException() = {
     "abc".toInt
 }
 ```
+
+### scala common methods
+
+- ClassOf
+
+> 用于获取类名
+
+```scala
+classOf[String]
+
+// 使用反射机制
+println(common.getClass.getName)
+```
+
+- asInstanceOf
+
+> 强制类型转换
+
+```scala
+val childCommon = fatherCommon.asInstanceOf[Common]
+```
+
+- isInstanceOf
+
+> 判断是否是`T`类型
+
+```scala
+new FatherCommon().isInstanceOf[Common]
+```
