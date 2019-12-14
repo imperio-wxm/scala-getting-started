@@ -176,7 +176,6 @@ class SunChild extends Child {
 
 > 抽象方法和属性不能由`private、final`关键字来修饰
 
-### scala abstract
 
 ### 伴生类和伴生对象
 
@@ -184,13 +183,15 @@ class SunChild extends Child {
 
 > 当有一个与单例(singleton)对象同名的类时，它被称为伴生(companion)类，单例(singleton)对象调用伴生对象
 
-> 伴生对象用于提供`静态`的支持，其中的属性和方法可以当做static看待；伴生类用于提供`非静态`的支持
+> 伴生对象用于提供`静态`的支持，其中的属性和方法可以当做static看待，通过伴生对象名.直接使用；伴生类用于提供`非静态`的支持
 
 > 伴生对象通常会使用`apply`数定义伴生类的构造方法，所以伴生对象无法用`new`关键字，而伴生类可以new
 
 > 伴生类及其伴随对象必须在同一个源文件中定义
 
 > 伴生对象和伴生类可以互相访问其私有成员，不与伴生类同名的单例对象称为孤立对象
+
+> 伴生对象的静态实现由`public static final MODULE$`实现，`MODULE$=this`表示的是当前类的一个实例引用
 
 ```scala
 class MyTest {
@@ -209,6 +210,27 @@ object MyTest {
 
     def sayHi(): Unit = {
         println(a)
+    }
+}
+```
+
+> 在伴生对象中定义`apply()`方法，则可以实现`类名()`的方式创建对象实例
+
+```scala
+ class ObjApply {
+    var name: String = _
+
+    def this(inName: String) {
+        this
+        this.name = inName
+    }
+}
+
+// 可以直接使用ObjApply("")创建对象，默认会调用apply方法
+object ObjApply {
+    def apply(inName: String): ObjApply = {
+        println("apply.....")
+        new ObjApply(inName)
     }
 }
 ```
