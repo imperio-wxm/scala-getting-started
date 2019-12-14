@@ -121,7 +121,7 @@ package scala {
 }
 ```
 
-### scala extends
+### scala extends & abstract
 
 > 重写非抽象方法必须用`override`关键字
 
@@ -165,6 +165,16 @@ class SunChild extends Child {
     // override var age: Int = 20
 }
 ```
+
+> 抽象类无法被实例化
+
+> 抽象类中可以没有抽象方法，抽象方法前`不加abstract`关键字
+
+> 在抽象类中可以有实现的正常方法
+
+> 如果一个子类继承了抽象类，则必须实现这个抽象类中的所有抽象方法和抽象属性
+
+> 抽象方法和属性不能由`private、final`关键字来修饰
 
 ### scala abstract
 
