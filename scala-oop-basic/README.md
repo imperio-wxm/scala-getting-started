@@ -145,6 +145,29 @@ class Student extends Person {
 }
 ```
 
+> var只能重写一个`抽象`的var属性(声明未初始化的属性就是抽象属性)
+
+> 抽象属性在编译过程中不会声明，但是会自动生成两个抽象方法，所以必须在抽象类中
+
+```scala
+abstract class Child {
+    var name: String
+    // 初始化之后是一个mutable variable
+    var age: Int = 10
+}
+
+class SunChild extends Child {
+    // 1. 如果在子类中重写父类的抽象属性，本质上是重写了此属性的抽象方法
+    // 2. override关键字可以省略
+    override var name: String = "wxm override"
+
+    // mutable variable cannot be overridden
+    // override var age: Int = 20
+}
+```
+
+### scala abstract
+
 ### 伴生类和伴生对象
 
 > 在scala中，没有静态的概念，创建一个单例对象来为程序的执行提供入口点
