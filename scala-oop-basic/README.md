@@ -234,3 +234,107 @@ object ObjApply {
     }
 }
 ```
+
+### scala trait
+
+> 等价于java中的接口+抽象类，并不是实现而是继承trait，特征中可以有抽象方法，也可以有实体方法
+
+> 多个类具有相同的特征时，利用`trait`关键字将相同特质抽象独立出来
+
+> 在scala中，使用java中的接口，都可以当做trait使用；直接用`extends关键字继承一个trait`
+
+> 如果一个类有`父类`，或有多个特质需要继承，则用`with`关键字
+
+```scala
+// 没有父类
+class 类名 extends 特质1 with 特质2 with 特质3....
+//有父类
+class 类名 extends 父类 with 特质1 with 特质2 with 特质3....
+```
+
+> trait当做java`接口`使用，此时底层原理沿用java的`implements`机制（可以反编译看字节码文件）
+
+```scala
+trait MyTrait {
+    // 定义一个抽象方法
+    def getName()
+}
+
+class A {
+}
+class B extends A with MyTrait {
+    override def getName(): Unit = {
+        println("this is B")
+    }
+}
+
+class D {
+}
+class E extends D with MyTrait {
+    override def getName(): Unit = {
+        println("this is E")
+    }
+}
+```
+
+> trait中既有抽象方法又有普通实现方法时，底层会生成两种trait字节码文件：Trait.class（对应java中的接口） 和 Trait$class.class（对应java中的抽象类）
+
+```scala
+trait MyTrait01 {
+    def getName()
+
+    def getAge(): Unit = {
+        println("age = 10")
+    }
+}
+
+class F extends MyTrait01 {
+    override def getName(): Unit = {
+        println("this is F")
+    }
+}
+```
+
+> 具有`动态混入（mixin）`特性，即当B继承A，且A动态混入了trait C中的某些方法，A并不强制拥有trait C中的方法
+
+> 动态混入可以在不修改原有类声明、定义、继承的基础上，扩展类的功能
+
+> 动态混入用`with`关键字，使用在new对象之后；可以是普通类也可以是抽象类，如果抽象类中已经含有抽象方法，则先with特质再对抽象方法进行匿名实现
+
+```scala
+// 动态混入普通类
+val g = new G with MyTrait02
+g.getName()
+// 动态混入抽象类
+val h = new H with MyTrait02
+h.getName()
+// 动态混入有抽象方法的抽象类
+val i = new I with MyTrait02 {
+    override def hello(): Unit = {
+        println("hello")
+    }
+}
+i.hello()
+i.getName()
+
+trait MyTrait02 {
+    def getName(): Unit = {
+        println("My trait02....")
+    }
+}
+
+// 普通类
+class G {
+}
+// 抽象类
+abstract class H {
+}
+// 抽象类，含有抽象方法
+abstract class I {
+    def hello()
+}
+```
+
+> 当动态混入多个特质时成为`叠加特质`，叠加特质的`声明从左到右`，但是`执行从右到左`
+
+
