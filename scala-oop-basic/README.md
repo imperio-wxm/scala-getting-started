@@ -337,4 +337,86 @@ abstract class I {
 
 > 当动态混入多个特质时成为`叠加特质`，叠加特质的`声明从左到右`，但是`执行从右到左`
 
+> 如果调用`super`并不是调用父特质，而是向前找特质，如果找不到才向父特质找
+
+> 在特质中重写抽象方法，需要使用`abstract override`关键字，此时重写的抽象方法任然是抽象的，需要后面的特质继续实现
+
+```scala
+// 特质中重写抽象方法
+trait Trait001 {
+    def getName(in: Int)
+}
+
+trait Trait002 extends Trait001 {
+    // 如果我们在子特质中重写了父特质的抽象方法，且同时调用了super父特质的抽象方法
+    // 此时子特质并不是完全实现，所以需要声明为：abstract override
+    // 此时super方法执行的顺序与动态混入有关，同样是向前面的特质找方法
+    abstract override def getName(in: Int): Unit = {
+        println("This trait 002..." + in)
+        super.getName(in)
+    }
+}
+```
+
+> `富接口`当特质中既有抽象方法又有非抽象方法时，此时特质成为富接口
+
+> 特质中可以有属性字段，当字段初始化了就是具体字段，没初始化就是抽象字段；字段是直接加到混入的类中，并不是继承得到
+
+```scala
+ // 特质字段
+val classTrait = new ClassTrait
+println(classTrait.name)
+val classTrait01 = new ClassTrait01 with Trait003
+println(classTrait01.name)
+        
+trait Trait003 {
+    val name: String = "test trait field"
+}
+
+class ClassTrait extends Trait003 {
+}
+
+class ClassTrait01 {
+}
+```
+
+> 扩展类的特质，即特质可以继承类，用于扩展类的功能
+
+> 所有继承了`扩展类的特质`的类，都是特质继承类的子类
+
+> 如果当前类同时继承了普通的父类，和扩展类的特质，为避免多继承发生；普通的父类一定要是扩展特质类的子类
+
+```scala
+// 特质继承类，扩展类功能
+trait LogException extends Exception {
+    def logException(): Unit = {
+        println(getMessage)
+    }
+}
+
+// MyException 同样也是 Exception的子类，因为LogException继承自Exception
+class MyException extends LogException {
+    override def getMessage: String = {
+        "this is my exception"
+    }
+}
+```
+
+> 自身类型（selfType）：主要为了解决特质的`循环依赖问题`，引入一个`限制混入该特质类的类型`
+
+```scala
+// 自身类型self type
+trait Logger {
+    // 定义自身类型，告诉编译器，声明Logger就是Exception
+    // 此写法相当于 trait Logger extends Exception {}
+    // 要求混入Logger 特质的类也应该是Exception的子类
+    this: Exception =>
+    def log(): Unit = {
+        println(getMessage)
+    }
+}
+```
+
+
+
 
