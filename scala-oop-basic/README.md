@@ -417,6 +417,89 @@ trait Logger {
 }
 ```
 
+### scala 嵌套类
+
+> 成员内部类和Java基本相同，静态内部类由伴生对象产生
+
+> 成员内部类访问外部类的私有属性`方式一`，通过`OuterClass.this.属性`访问，其中`OuterClass.this.`代表了外部类的对象实例
+
+> 成员内部类访问外部类的私有属性`方式二`，通过`别名.属性`访问，此时`别名 =>` 要放在外部类属性的前面
+
+> 由于内部类关联与外部类的对象，所以需要使用`类型投影`来消除绑定关系：`外部类#内部类`
+
+```scala
+// 外部类实例
+val outerClassDemo01 = new OuterClassDemo
+val outerClassDemo02 = new OuterClassDemo
+
+// 成员内部类，通过外部类实例创建；成员内部类是和外部对象关联的
+val innerClass01 = new outerClassDemo01.InnerClass
+val innerClass02 = new outerClassDemo02.InnerClass
+
+// 成员内部类访问外部类的属性
+innerClass01.getAge()
+innerClass01.getName()
+
+// 成员内部类通过别名访问外部类
+val outerAlias = new OuterClassDemoAlias
+new outerAlias.InnerClass().getAge()
+
+// 通过伴生对象创建静态内部类
+val staticInnerClass = new OuterClassDemo.StaticInnerClass
+
+// 外部类
+class OuterClassDemo {
+    val name: String = "wxm"
+    private val age: Int = 10
+
+    // 成员内部类
+    class InnerClass {
+        def getName(): Unit = {
+            println(OuterClassDemo.this.name)
+        }
+
+        def getAge(): Unit = {
+            println(OuterClassDemo.this.age)
+        }
+        // 创建类型投影，告诉方法在接收参数的时候，不用绑定外部类的对象，只用传相同类型就可接收
+        def typeProjection(inner: OuterClassDemo#InnerClass): Unit = {
+            println(inner.getName())
+        }
+    }
+
+}
+
+class OuterClassDemoAlias {
+    // 外部类实例的一个别名
+    outerAlias =>
+
+    // 成员内部类
+    class InnerClass {
+        def getName(): Unit = {
+            // 通过别名访问
+            println(outerAlias.name)
+        }
+
+        def getAge(): Unit = {
+            println(outerAlias.age)
+        }
+    }
+
+    // 应用别名时，属性要在别名之后
+    val name: String = "alias"
+    private val age: Int = 100
+}
+
+// 伴生对象
+object OuterClassDemo {
+
+    // 使用伴生对象实现静态内部类
+    class StaticInnerClass {
+    }
+
+}
+```
+
 
 
 
