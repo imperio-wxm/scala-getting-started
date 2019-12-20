@@ -1,6 +1,6 @@
 ## Functional programming basics
 
-- 函数返回值
+### 函数返回值
 
 > 如果函数明确声明没有返回值`Unit`，则函数中return不起作用
 
@@ -28,7 +28,7 @@ def fun(a:Int, b:Int) {
 }
 ```
 
-- 函数的可变参数
+### 函数的可变参数
 
 > 可变形参是个集合：ArraySeq()
 
@@ -46,7 +46,7 @@ def fun5(a:String,b:Int*): String = {
 }
 ```
 
-- Lazy Function
+### Lazy Function
 
 > 将函数的求值尽可能的推迟，直到调用时才真正执行
 
@@ -61,4 +61,74 @@ lazy val str3 = (a: Int, b: Int) => {
     a + b
 }
 ```
+
+### Scala 隐式转换 & 模式匹配
+
+> 隐式转换函数以`implicit`关键字声明的，带有`一个`参数的函数；会自动应用将一种类型转换成另一种类型
+
+> 隐式函数要在作用域中才可以生效
+
+```scala
+implicit def f1(d: Double): Int = {
+    d.toInt
+}
+
+// 自动应用f1$1(6.5)进行类型转换
+val num1: Int = 6.5
+println(num1)
+```
+
+> 隐式函数的函数名可以任意，只与函数的签名（参数类型、返回值类型）有关系
+
+> 在同一个作用域中隐式函数可以有多个，可以形成一个隐式函数的列表，但同时只能有`唯一一个`可以识别应用
+
+> 可以通过隐式转换动态扩展功能
+
+```scala
+// 通过隐式转换在不修改原始代码的情况下，为类扩展新的方法
+implicit def getNewAge(a: ExtensionMethodA): ExtensionMethodB = {
+    new ExtensionMethodB
+}
+
+val a = new ExtensionMethodA
+// 实际上是利用getNewAge$1(a)给了一个ExtensionMethodB的实例，然后用ExtensionMethodB的实例调用相应方法
+a.getAge()
+
+class ExtensionMethodA {
+    def getName(): Unit = {
+        println("ExtensionMethodA")
+    }
+}
+
+class ExtensionMethodB {
+    def getAge(): Unit = {
+        println("ExtensionMethodB")
+    }
+}
+```
+
+> `隐式变量`某个形参标记为`implicit`，编译器会在函数声明`隐式参数`的情况下，寻找作用域内的`隐式变量`当做函数的隐式参数
+
+> 参数的默认值只能作用在一个参数，而`隐式变量`可以作用在多个参数上
+
+> 当同事有`隐式变量`和普通变量默认值时，implicit优先级更高
+
+> 当一个隐式参数没有匹配到隐式变量时，任然会使用默认值
+
+> 编译器优先级：自定义传值 > 隐式变量值 > 指定的默认值
+
+> 在隐式变量匹配时，相同作用域中不能出现`二义性`的参数
+
+```scala
+// 隐式变量
+implicit val name: String = "hello"
+// 隐式参数
+def hello(implicit a: String): Unit = {
+    println("this is " + a)
+}
+// 调用时直接hello$1(name)，使用隐式参数的函数时，不用加()
+hello
+```
+
+
 
