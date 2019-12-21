@@ -21,12 +21,24 @@ object ScalaPatternMatching {
 
         // 隐式变量
         implicit val name: String = "hello"
+
         // 隐式参数
         def hello(implicit a: String): Unit = {
             println("this is " + a)
         }
         // 调用时直接hello$1(name)，使用隐式参数的函数时，不用加()
         hello
+
+        // 隐式类
+        implicit class Db01(emc: ExtensionMethodC) {
+            def add(): Unit = {
+                println("this is implicit ExtensionMethodC")
+            }
+        }
+        // 通过隐式类扩展类的功能
+        // Db01$0(ExtensionMethodC).add()
+        val emc = new ExtensionMethodC
+        emc.add()
     }
 }
 
@@ -40,5 +52,11 @@ class ExtensionMethodA {
 class ExtensionMethodB {
     def getAge(): Unit = {
         println("ExtensionMethodB")
+    }
+}
+
+class ExtensionMethodC {
+    def getNumber: Unit = {
+        println("this is ExtensionMethodC")
     }
 }
