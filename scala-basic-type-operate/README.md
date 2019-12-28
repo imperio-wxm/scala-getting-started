@@ -222,3 +222,100 @@ val list2Buffer = CollectionConverters.ListHasAsScala(list).asScala
 list2Buffer.addOne(30)
 println(list2Buffer)
 ```
+
+### Tuple
+
+> 可以理解为一个容器，可以将无关的元素封装成一个整体
+
+> 元组最多可以放`22`个元素
+
+> Tuple由Tuple1—Tuple22组成，后面的数值表示Tuple中元素的个数，会根据元素个数不同，自动对应不同的元组类型
+
+> 访问元组可以通过下划线+序号（`_1,_2...`）方式访问，也可以通过索引`productElement`访问
+
+> 遍历元组需要迭代器
+
+```scala
+// 此声明为Tuple4
+val tuple = (1, 2, 3, 4, "wxm")
+println(tuple)
+// _从1开始
+println(tuple._1)
+// productElement 从0开始
+println(tuple.productElement(0))
+
+// 遍历
+for (i <- tuple.productIterator) {
+    println(i)
+}
+```
+
+## List
+
+> scala中List不可变，属于Seq的子类
+
+> 由于list不可变，所以给list追加元素只能返回一个新的list，原本的list不会改变
+
+> 末尾添加 list `:+` item; 首部添加 item `+:` list
+
+> 双冒号`::`表示将左边的元素按照`从右到左`的顺序添加到`Nil`空集合后返回
+
+> 三冒号`:::`表示将左边的每一个元素（如果还是集合要将集合打开，而不是整个集合）按照`从右到左`的顺序添加到`Nil`空集合后返回
+
+> 做冒号操作时，最后一个元组必须是集合
+
+> 三冒号的最后两个元素，即`:::`左右两边的元素必须是集合
+
+```scala
+val list = List(1, 2, 3, 4, "wxm")
+println(list)
+// 空list
+val list1 = Nil
+println(list1)
+
+println(list(0))
+
+// list 追加会返回一个新的list
+val list2 = list :+ 55
+println(list2)
+val list3 = "wxm" +: list
+println(list3)
+
+// 通过::Nil空集合返回
+val list4 = "a" :: "b" :: 1 :: 2 :: list :: Nil
+println(list4)
+
+// 将list扁平化，每一个元素拿出来
+val list5 = 1 :: "wxm123" :: list ::: list4
+println(list5)
+```
+
+> ListBuffer为可变集合，是Seq —> Buffer 的子类，可以进行增删改查
+
+```scala
+// 可变集合ListBuffer
+val listBuffer1 = ListBuffer[Any](1, 2, 3, "wxm")
+val listBuffer2 = Nil
+listBuffer2.appended("fasd")
+listBuffer2 + "wxm"
+// 将listBuffer2 合并入listBuffer1，listBuffer2不变
+listBuffer1 ++= listBuffer2
+println(listBuffer1)
+println(listBuffer2)
+// 合并两个集合返回一个新集合
+val listBuffer3 = listBuffer1 ++ listBuffer2
+println(listBuffer3)
+// 在集合末尾添加
+listBuffer3 :+ 5
+println(listBuffer3)
+// 在集合首部添加
+listBuffer3 +: "first"
+println(listBuffer3)
+// 移除元素
+listBuffer3.remove(0)
+for (item <- listBuffer3) {
+println(item)
+}
+```
+
+## Queue
