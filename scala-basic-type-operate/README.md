@@ -439,3 +439,78 @@ for (item <- set02) {
     println(item)
 }
 ```
+
+## Collections operate
+
+### Map operate
+
+> 集合中的每个元素通过指定的`函数`进行运算，将计算的值返回成一个新的集合
+
+> 通过高阶函数实现（`能接收函数当做参数的函数`称为高阶函数）
+
+```scala
+val list = List(1, 2, 3)
+println(list.map(add).map(involution))
+
+println(MyList().map(add))
+
+def add(a: Int): Int = {
+    a + 1
+}
+def involution(a: Int): Int = {
+    a * a
+}
+
+// 模仿高阶函数实现map操作
+class MyList {
+    val list: List[Int] = List(1, 2, 3)
+    var newList: List[Int] = List[Int]()
+
+    // 能接收函数作为参数的函数称为高阶函数
+    def map(fun: Int => Int): List[Int] = {
+        for (item <- list) {
+            newList = newList :+ fun(item)
+        }
+        newList
+    }
+}
+
+object MyList {
+    def apply(): MyList = new MyList()
+}
+```
+
+### FlatMap & Filter & Reduce & Fold operate
+
+> 集合扁平化操作，即将集合中的每一个子元素从底层抽取到最外层，形成一个新的集合
+
+> Reduce接收两个参数，运算后返回的一个参数当做下一次迭代的左边入参
+
+> Fold需要指定一个初始值，以初始值为第一次运算的一个入参，运算类似Reduce的迭代下去
+
+> Fold的缩写形式`/:` 为foldLeft; `:\` 为foldRight
+
+```scala
+// flatMap
+val flatList = List("sfasdf", "fasd", "adfadfsdsf")
+println(flatList.flatMap(upper))
+
+// filter
+println(flatList.filter(filter01))
+
+// reduceLeft，reduceRight运算方向相反
+// 1 * 2 * 3
+println(list.reduceLeft(involution))
+
+// fold
+println(list.fold(10)(involution))
+println(list.foldRight(10)(involution))
+
+def involution(a: Int, b: Int): Int = {
+    a * b
+}
+
+def upper(str: String): String = {
+    str.toUpperCase
+}
+```
