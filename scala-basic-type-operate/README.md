@@ -314,7 +314,7 @@ println(listBuffer3)
 // 移除元素
 listBuffer3.remove(0)
 for (item <- listBuffer3) {
-println(item)
+    println(item)
 }
 ```
 
@@ -374,9 +374,9 @@ println(tupleMap)
 println(tupleMap(1))
 // 判断key是否存在
 if (tupleMap.contains(123)) {
-println(tupleMap(123))
+    println(tupleMap(123))
 } else {
-println("not exist")
+    println("not exist")
 }
 
 // get返回值用Some包装，有值则返回包含值得Some，否则返回None
@@ -400,21 +400,42 @@ println(tupleMap)
 
 // map 遍历
 for ((key, v) <- tupleMap) {
-println(key + " _ " + v)
+    println(key + " _ " + v)
 }
 println()
 for (value <- tupleMap.values) {
-println(value)
+    println(value)
 }
 println()
 for (key <- tupleMap.keys) {
-println(key)
+    println(key)
 }
 println()
 // 类型是Tuple2
 for (tuple <- tupleMap) {
-println(tuple)
-tuple._1
-tuple._2
+    println(tuple)
+    tuple._1
+    tuple._2
+}
+```
+
+### Set
+
+```scala
+// 不可变set
+val set01 = Set("dfasdf", 1, 1, 456)
+println(set01)
+
+// 可变set
+val set02 = mutable.Set("fasdfa", "a", "b", "a", 1)
+println(set02)
+// 添加
+set02.add("a")
+set02.add("fasdf")
+// 删除，不存在也不会报错
+set02.remove("a")
+// 遍历
+for (item <- set02) {
+    println(item)
 }
 ```
