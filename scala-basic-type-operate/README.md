@@ -319,3 +319,102 @@ println(item)
 ```
 
 ## Queue
+
+```scala
+val queue = new mutable.Queue[Any]
+queue += 40
+queue.addOne(50)
+// 将list打散
+queue ++= List(4, 5, 6)
+
+println(queue)
+
+// 出入队列
+// 默认从队首出队
+val first = queue.dequeue()
+println(first)
+// 默认从队尾入队
+val last = queue.enqueue(111, 222)
+println(last)
+
+// 查看元素，不对原队列造成影响，只是查看数据
+// 查看首元素
+println(queue.head)
+// 查看尾元素
+println(queue.last)
+// 查看除了第一个元素外的其他元素
+println(queue.tail)
+println(queue.tail.tail.tail)
+```
+
+### Map
+
+> 不可变Map，属于有序Map，输出顺序与定义顺序一致，Map中的元素都是Tuple2类型
+
+> 可变Map是无序的
+
+```scala
+// 不可变Map
+val map01 = Map(123 -> 456, 456 -> "wxm", "dfasdf" -> "fasdf123")
+println(map01)
+
+// 可变Map
+val map02 = mutable.Map("test" -> 123, 123 -> 456, "abc" -> 777)
+println(map02)
+
+// 空map
+val emptyMap = new mutable.HashMap[String, String]
+println(emptyMap)
+
+// 对偶元组创建map
+val tupleMap = mutable.Map((1, 2), ("fasdf", "fasdf"), (123, "sdfasd"))
+println(tupleMap)
+
+// map取出元素，如果元素不存在则抛出异常
+println(tupleMap(1))
+// 判断key是否存在
+if (tupleMap.contains(123)) {
+println(tupleMap(123))
+} else {
+println("not exist")
+}
+
+// get返回值用Some包装，有值则返回包含值得Some，否则返回None
+println(tupleMap.get(123).get)
+println(tupleMap.get(566))
+
+// get如果有key则返回值，没有key则返回指定的默认值
+println(tupleMap.getOrElse(123, "dafsd"))
+println(tupleMap.getOrElse(444, "not exist"))
+
+// map的修改
+tupleMap("456") = 555
+tupleMap(123) = 888
+tupleMap.addAll(Map("a" -> 1, "b" -> 2))
+println(tupleMap)
+
+// map删除，key不存在不会保存
+tupleMap.remove(123)
+tupleMap.remove("iii")
+println(tupleMap)
+
+// map 遍历
+for ((key, v) <- tupleMap) {
+println(key + " _ " + v)
+}
+println()
+for (value <- tupleMap.values) {
+println(value)
+}
+println()
+for (key <- tupleMap.keys) {
+println(key)
+}
+println()
+// 类型是Tuple2
+for (tuple <- tupleMap) {
+println(tuple)
+tuple._1
+tuple._2
+}
+```
