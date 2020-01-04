@@ -514,3 +514,85 @@ def upper(str: String): String = {
     str.toUpperCase
 }
 ```
+
+### Zip
+
+> 拉链的本质是将两个集合中的元素形成`对偶`元组
+
+> 如果两个集合的元素个数不相等，则以少的为标准，多的数据丢失
+
+> 取出对偶元组中的数据，遍历即可
+
+```scala
+val list1 = List(1, 2, "3")
+val list2 = List(4, 5, "6")
+val zipList = list1.zip(list2)
+println(zipList)
+
+for (z <- zipList) {
+    println(z._1 + ", " + z._2)
+}
+```
+
+### Iterator
+
+> 迭代器执行一次之后不能继续使用
+
+```scala
+val list = List(1, 2, 3, 4, 5, 6, 7, "8").iterator
+while (list.hasNext) {
+    println(list.next())
+}
+
+val list2 = List(1, 2, 3, 4, 5, 6, 7, "8").iterator
+for (item <- list2) {
+    println(item)
+}
+```
+
+### Stream
+
+> stream也是一个集合，这个集合无限大
+
+> stream的末尾遵循`lazy`原则，需要多少的元素会动态自动扩充
+
+> 使用stream时，last方法不要用，会进入无限循环
+
+```scala
+// "Use LazyList instead of Stream", "2.13.0"
+def getNumber(n: BigInt): LazyList[BigInt] = {
+    n #:: getNumber(n + 1)
+}
+
+val getNumberStream = getNumber(1)
+println(getNumberStream)
+println(getNumberStream.head)
+// 使用tail时会产生新的数据
+println(getNumberStream.tail)
+println(getNumberStream)
+```
+
+### View
+
+> view作用于集合，总会产生一个`lazy`的集合
+
+> view的数据不会缓存，每次都是重新计算后返回
+
+> 通常用于优化代码，只在使用的时候才去生成，减少内存消耗
+
+```scala
+def reverseEqual(n: Int): Boolean = {
+    n.toString.equals(n.toString.reverse)
+}
+
+val list = (1 to 200).filter(reverseEqual)
+println(list)
+
+// 使用view时，只有迭代了上一个，下一个才会参与计算，属于lazy
+// 此时不会调用 filter 中的方法
+val viewList = (1 to 200).view.filter(reverseEqual)
+println(viewList)
+for(item <- viewList) {
+    println(item)
+}
+```
