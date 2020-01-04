@@ -144,4 +144,129 @@ hello
 
 > 隐式转换过程，编译器会在当前作用域下寻找`隐式方法`、`隐式类`、`隐式对象`、`隐式属性`
 
+## Match 模式匹配
 
+> 使用`match`和`case`关键字进行模式匹配，不用写break，`case _`表示匹配的默认值，类似java中switch 的default
+
+> 匹配成功则执行`=>`之后的代码块
+
+> 如果所有case都不匹配，且没有case _，则抛出`MatchError`
+
+> case _ 默认匹配只能写在最后，否则之后的匹配都不会执行
+
+```scala
+val op = "*"
+val a = 5
+val b = 4
+op match {
+    case "+" => println(a + b)
+    case "-" => println(a - b)
+    case "*" => println(a * b)
+    case "/" => println(a / b)
+    case _ => println("miss match")
+}
+```
+
+> 如果要匹配范围，则需要加`条件守卫`，即可以在case中加入if判断，且`_`此时并不是表示默认匹配
+
+```scala
+case _ if op.toInt < 10 && op.toInt > 5 => println("3 < x < 10")
+```
+
+> 如果case之后一个变量，则模式匹配会将匹配到的值赋值给这样变量，这样=>后的代码块就可以使用此变量；此时这个case相当于无条件匹配
+
+```scala
+case param => println("this is " + param)
+```
+
+> 可以直接将整个模式匹配赋值给一个变量，匹配到的代码块最后一句就是模式匹配的返回值，赋值给这个变量
+
+> 模式匹配可以直接进行类型匹配，类似使用`isInstanceOf`,`asInstanceOf`
+
+> 在类型匹配中case _:类型，这个下划线表示`隐藏变量名`，并不表示默认匹配
+
+```scala
+// 根据param的类型去匹配
+val index = 3
+val param = if (index == 0) List(1, 2, 3)
+    else if (index == 1) Map("a" -> 1, "b" -> 2)
+    else if (index == 2) 123
+    else if (index == 3) Array("dfas")
+    else "aaa"
+
+param match {
+    case a: List[Int] => println("List[Int]=" + a)
+    case b: Map[String, Int] => println("Map[String, Int]=" + b)
+    case c: BigInt => println("BigInt=" + c)
+    case d: Array[String] => println("Array[String]=" + d)
+    case _ => println("miss match")
+}
+```
+
+> `模式匹配-数组`
+
+> Array(0)表示匹配只有一个且为0的元素
+
+> Array(x,y)表示匹配有两个元素的数组，且将值赋值给x，y
+
+> Array(0,_*)表示匹配以0开始的数组
+
+```scala
+val arrs = Array(Array(0), Array(5, 6), Array(0, "a", 1.1))
+for (arr <- arrs) {
+    arr match {
+        case Array(0) => println("Array(0)")
+        case Array(x, y) => println("Array(x,y), x=" + x + ", y=" + y)
+        case Array(0, _*) => println("Array(0,_*)")
+        case _ => println("miss match")
+    }
+}
+```
+
+> `模式匹配-列表`
+
+> 0 :: Nil表示0
+
+> x :: y :: Nil表示两个元素
+
+> 0 :: tail表示以0开头，tail返回的是一个新的List
+
+```scala
+val arrs = List(List(0), List(5, 6), List(0, "a", 1.1))
+for (arr <- arrs) {
+    arr match {
+        case 0 :: Nil => println("0 :: Nil")
+        case x :: y :: Nil => println("x :: y :: Nil" + x + ", y=" + y)
+        case 0 :: tail => println("0 :: tail = " + tail)
+        case _ => println("miss match")
+    }
+}
+```
+
+> `模式匹配-元组`
+
+> (0,_)匹配以0开头的二元组，并且用_表示的元素忽略
+
+> (y,0)匹配以0为第二个元素的二元组
+
+> (x,y,z)匹配任意三元组
+
+```scala
+val arrs = List((0, 1), (10, 0), (1, 2, "wxm"))
+for (arr <- arrs) {
+    arr match {
+        case (0, _) => println("(0,_)")
+        case (y, 0) => println("(y, 0), y = " + y)
+        case (x, y, z) => println("(x, y, z), x = " + x + ", y = " + y + ", z = " + z)
+        case _ => println("miss match")
+    }
+}
+```
+
+> `模式匹配-对象`
+
+> case中对象的`unapply`(对象提取器)方法返回`some`集合，则为匹配成功
+
+> 返回`none`类型则为匹配失败
+
+> case后对象提取器的入参为多个时，默认去调用`unapplySeq`方法，执行后将返回的多个参数赋值给入参；入参与返回参数个数一定要相同才能匹配
