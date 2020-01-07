@@ -270,3 +270,59 @@ for (arr <- arrs) {
 > 返回`none`类型则为匹配失败
 
 > case后对象提取器的入参为多个时，默认去调用`unapplySeq`方法，执行后将返回的多个参数赋值给入参；入参与返回参数个数一定要相同才能匹配
+
+```scala
+object Person {
+    // 1. 对象提取器
+    // 2. 返回一个Option的Seq集合
+    def unapplySeq(arg: String): Option[Seq[String]] = {
+        println("in unapplySeq")
+        if (arg.contains(",")) Some(arg.split(","))
+        else None
+    }
+}
+
+val person: String = "1,2,3"
+// 此时匹配的是多个参数，返回的是Some(1,2,3)
+person match {
+    // 会去调用对象的unapplySeq方法，因为入参是多个
+    // some返回值的个数，要和构造器入参的个数一致，否则无法匹配
+    case Person(a, b, c) => println("a = " + a + ", b = " + b + ", c = " + c)
+    case _ => println("miss match")
+}
+```
+
+## 偏函数
+
+> 在对符合某个条件，而不是所有条件时执行的函数，即`可以部分适用的函数`
+
+> 将包在大括号内的一组`case`语句封装成一个函数，就叫偏函数
+
+> 偏函数只会作用于指定类型的参数、或指定范围值的参数进行计算；超出范围的直接忽略
+
+> 偏函数需要继承一个`PartialFunction`的特质
+
+> collect函数支持偏函数
+
+```scala
+val list = List(1, 2, 3, 4, 5, "fasd", "dfasd")
+// 1. 定义一个偏函数，入参是Any类型，返回值是Int类型
+// 2. 如果isDefinedAt(x: Any)返回true，则会调用apply方法构建对象实例；如果是false则忽略
+// 3. apply(v1: Any) 为具体执行的逻辑
+val partialList = new PartialFunction[Any, Int] {
+    override def isDefinedAt(x: Any): Boolean = x.isInstanceOf[Int]
+
+    override def apply(v1: Any): Int = {
+        v1.asInstanceOf[Int] + 10
+    }
+}
+println(list.collect(partialList))
+
+// 偏函数简写1
+def partialFunction01: PartialFunction[Any, Int] = {
+    case x: Int => x + 10
+}
+println(list.collect(partialFunction01))
+// 偏函数简写2
+println(list.collect({ case x: Int => x + 10 }))
+```
