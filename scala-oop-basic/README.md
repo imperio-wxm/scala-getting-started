@@ -500,6 +500,37 @@ object OuterClassDemo {
 }
 ```
 
+### 模版类
+
+> 模版类会默认生成很多方法，用`case`关键字声明
+
+> 模版类是为了模式匹配而优化的类
+
+> 模版类中的入参默认都是`val`类型
+
+```scala
+abstract class Father
+
+// 模版类
+case class Child1(name: String) extends Father
+
+case class Child2(age: Int, gender: String) extends Father
+
+case object Obj1 extends Father
+
+def demo1: Unit = {
+    // 模版类会自动生成unapply方法
+    for (item <- List(Child1("child1"), Child2(27, "male"), Obj1)) {
+        item match {
+            case Child1(i) => println("i = " + i)
+            case Child2(i, j) => println("i = " + i + ", j = " + j)
+            case Obj1 => println("Obj1")
+            case _ => println("miss match")
+        }
+    }
+}
+```
+
 
 
 
