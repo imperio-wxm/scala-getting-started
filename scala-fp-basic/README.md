@@ -392,3 +392,69 @@ def fun1(x: Int) = {
 val result = fun1(2)(4)
 println(result)
 ```
+
+## 参数类型推断
+
+> 参数类型为可推断时，可以省略类型
+
+> 传入的参数只有单个参数时，可以省略括号
+
+> 如果变量只在`=>`右边出现一次，可以简写成`_`
+
+```scala
+val list = List(1, 2, 3, 4)
+// 用匿名函数
+println(list.map((x: Int) => x + 1))
+// 类型可以省略
+println(list.map((x) => x + 1))
+// 括号可以省略
+println(list.map(x => x + 1))
+// 可以简写_
+println(list.map(_ + 1))
+
+// 匿名函数
+println(list.reduce((a: Int, b: Int) => a + b))
+// 类型可以省略
+println(list.reduce((a, b) => a + b))
+// 简写_
+println(list.reduce(_ + _))
+```
+
+## 闭包
+
+> 一个函数与其相关引用环境组成一个整体
+
+> 要清楚闭包函数，引用了函数外的哪些变量
+
+```scala
+def fun1(n1: Int) = (n2: Int) => n1 + n2
+// fun1(10)是闭包
+println(fun1(10)(20))
+
+//等价于
+val f1 = fun1(10)
+val f2 = f1(20)
+println(f2)
+```
+
+## 柯里化
+
+> 接收多个参数的函数都可以转换为接收单个参数的函数，这个过程就是柯里化
+
+```scala
+def add(x: Int)(y: Int) = x + y
+// 函数柯里化
+println(add(1)(2))
+
+def eq(str1: String, str2: String): Boolean = {
+    str1.equals(str2)
+}
+// 隐式类，用于扩充string方法
+implicit class CheckEq(s: String) {
+    // 高阶函数
+    def checkEq(ss: String)(f: (String, String) => Boolean): Boolean = {
+        f(s.toLowerCase(), ss.toLowerCase())
+    }
+}
+println("abc".checkEq("ABC")(eq))
+```
