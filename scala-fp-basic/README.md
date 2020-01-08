@@ -326,3 +326,69 @@ println(list.collect(partialFunction01))
 // 偏函数简写2
 println(list.collect({ case x: Int => x + 10 }))
 ```
+
+## 匿名函数
+
+> 不需要写def关键字
+
+> 不需要指定返回值，自动类型推导作为返回值
+
+> 函数的`=`替换成`=>`
+
+> 如果有多行，可以用`{}`代码块进行包装
+
+```scala
+val add = (param: Int) => {
+    println(param)
+    param + 10
+}
+
+println(add(20))
+```
+
+## 高阶函数
+
+> 可以接收函数作为参数的函数成为高阶函数；也可以返回函数
+
+> 可接收的函数不止一个，可以为多个
+
+```scala
+// 参数为函数
+def fun1(f: Double => Double, param: Double): Double = {
+    f(param)
+}
+
+def fun2(param: Double): Double = {
+    param * param
+}
+
+val result = fun1(fun2, 2.0)
+println(result)
+
+
+// 多个函数参数
+def fun1(f: Double => Double, f1: Double => Int, param: Double): Double = {
+    f(f1(param))
+}
+
+def fun2(param: Double): Double = {
+    param * param
+}
+
+def fun3(param: Double): Int = {
+    (param * 10).toInt
+}
+
+val result = fun1(fun2, fun3, 2.0)
+println(result)
+
+
+// 返回值为函数
+def fun1(x: Int) = {
+    y: Int => x * y
+}
+
+// fun1(2) 整体是 y: Int => x * y 这个匿名函数；即函数柯里化
+val result = fun1(2)(4)
+println(result)
+```
