@@ -458,3 +458,42 @@ implicit class CheckEq(s: String) {
 }
 println("abc".checkEq("ABC")(eq))
 ```
+
+## 抽象控制
+
+> 参数是函数
+
+> 这个函数参数没有输入也没有返回值
+
+```scala
+def demo01: Unit = {
+    def myThread(f1: () => Unit): Unit = {
+        new Thread() {
+            override def run(): Unit = {
+                f1()
+            }
+        }.start()
+    }
+
+    myThread {
+        () => {
+            println(Thread.currentThread().getName)
+        }
+    }
+}
+
+// 简写
+def demo02: Unit = {
+    def myThread(f1: => Unit): Unit = {
+        new Thread() {
+            override def run(): Unit = {
+                f1
+            }
+        }.start()
+    }
+
+    myThread {
+        println(Thread.currentThread().getName)
+    }
+}
+```
