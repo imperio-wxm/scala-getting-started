@@ -18,12 +18,14 @@ class PersonTest01(nameArg: String, ageArg: Int) {
     var age: Int = ageArg
 
     // 通过this来定义辅助构造函数，通过形参的个数、类型不同来构造不同的辅助构造函数
+    // 辅助构造器需要直接或间接调用主构造器
     def this(name: String) {
         // 调用主构造函数
         this(name, 20)
         this.name = name
     }
 
+    // 后声明的辅助构造器可以直接调用前面声明的辅助构造器
     def this() {
         this("test")
     }
