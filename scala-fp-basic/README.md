@@ -68,6 +68,8 @@ lazy val str3 = (a: Int, b: Int) => {
 
 > 隐式函数要在作用域中才可以生效
 
+> 编译器在编译过程中出错时，会在作用域范围内寻找是否存在可用隐式转换
+
 ```scala
 implicit def f1(d: Double): Int = {
     d.toInt
@@ -474,9 +476,9 @@ println("abc".checkEq("ABC")(eq))
 
 ## 抽象控制
 
-> 参数是函数
+> 参数是函数（代码块）
 
-> 这个函数参数没有输入也没有返回值
+> 代码块在函数中被使用几次，就会调用几次
 
 ```scala
 def demo01: Unit = {
