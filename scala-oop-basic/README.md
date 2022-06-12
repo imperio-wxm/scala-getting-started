@@ -577,5 +577,20 @@ Son是Father的子类，则MyList[Son]也是MyList[Father]的 父类
 Son是Father的子类，则MyList[Son]也是MyList[Father]的 没有继承关系
 ```
 
+> [T <: Person] 泛型的上限（T不能超过Person）
+```scala
+传入的T可以是Person的子类，也可以是Person自身
+```
 
+> [T >: Person] 泛型的下限（T不能低于Person）
+```scala
+传入的T可以是Person的父类，也可以是Person自身
+```
 
+> [A : B] 上下文限定
+```scala
+等价于：
+def fun[A](a: A)(implicit arg:B[A]) = Unit {}
+
+表示了此函数的隐式参数B也必须是A的泛型
+```
