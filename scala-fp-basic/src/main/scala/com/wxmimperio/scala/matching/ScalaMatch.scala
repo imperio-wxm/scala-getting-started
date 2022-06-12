@@ -123,6 +123,18 @@ object ScalaMatch {
         }
     }
 
+    def matchDemo09: Unit = {
+        // 样例类，自动生成apply和unapply方法
+        case class Student(name: String, age: Int)
+
+        val student = Student("wxm", 19)
+
+        student match {
+            case Student("wxm", 19) => println("wxm, 19")
+            case _ => println("not match")
+        }
+    }
+
     def main(args: Array[String]): Unit = {
         //matchDemo01
         //matchDemo02
@@ -134,5 +146,6 @@ object ScalaMatch {
         // 匹配对象，需要用到unapply拆解属性
         //matchDemo07
         matchDemo08
+        matchDemo09
     }
 }

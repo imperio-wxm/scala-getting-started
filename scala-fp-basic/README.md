@@ -271,6 +271,8 @@ for (arr <- arrs) {
 
 > case后对象提取器的入参为多个时，默认去调用`unapplySeq`方法，执行后将返回的多个参数赋值给入参；入参与返回参数个数一定要相同才能匹配
 
+> case class样例类，会自动生成apply和unapply方法
+
 ```scala
 object Person {
     // 1. 对象提取器
@@ -289,6 +291,17 @@ person match {
     // some返回值的个数，要和构造器入参的个数一致，否则无法匹配
     case Person(a, b, c) => println("a = " + a + ", b = " + b + ", c = " + c)
     case _ => println("miss match")
+}
+
+def matchDemo09: Unit = {
+    // 样例类，自动生成apply和unapply方法
+    case class Student(name: String, age: Int)
+    val student = Student("wxm", 19)
+
+    student match {
+        case Student("wxm", 19) => println("wxm, 19")
+        case _ => println("not match")
+    }
 }
 ```
 
