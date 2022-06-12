@@ -130,6 +130,8 @@ object ScalaMatch {
         //matchDemo04
         //matchDemo05
         //matchDemo06
+
+        // 匹配对象，需要用到unapply拆解属性
         //matchDemo07
         matchDemo08
     }
