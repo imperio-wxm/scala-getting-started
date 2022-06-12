@@ -561,6 +561,21 @@ class StringMsg[String](value: String) extends Message(value)
 class MultipleMsg[A, B, C](val doubleMsg: A, val booleanMsg: B, val floatMsg: C)
 ```
 
+> [+T] 协变（继承关系协同变化）
+
+```scala
+Son是Father的子类，则MyList[Son]也是MyList[Father]的 子类
+```
+
+> [-T] 逆变（继承关系逆向变化）
+```scala
+Son是Father的子类，则MyList[Son]也是MyList[Father]的 父类
+```
+
+> [T] 不变（无继承关系）
+```scala
+Son是Father的子类，则MyList[Son]也是MyList[Father]的 没有继承关系
+```
 
 
 
